@@ -1,2 +1,9 @@
 py-cord
 pymongo
+requests
+Pillow
+python-dateutil
+beautifulsoup4
+coc.py
+pandas
+matplotlib

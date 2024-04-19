@@ -30,20 +30,16 @@ bot.remove_command('help')
 
 ####### +++++++++++++ COC CLIENT +++++++++++++ #######
 
-coc_client = coc.login(
-    'onkardsagare2@gmail.com',
-    'Onkarcocapi@1234',
-    key_names="otv2",
-    client=coc.EventsClient, cache=True, load_game_data=coc.LoadGameData(default=True)
-)
-logging.basicConfig(level=logging.ERROR)
+coc_client = coc.Client(key_names='otv2')
 
-@coc_client.event
-@coc.PlayerEvents.troop_change()
-async def player_troop_upgraded(cached_player, player, troop):
-  player.load_game_data()
+async def startClient(email, password):
+    try:
+        await coc_client.login(email=email, password=password)
+        print(f"[+] cocClient")
+    except Exception as Exc:
+        print(f"Failed to setup clash api connection {Exc}")
+        exit(1)
 
-  print("Player {} upgraded {}, which costs {} to upgrade again.", player.name, troop.name, troop.upgrade_cost)
 
 ####### +++++++++++++ CONFIG +++++++++++++ #######
 
@@ -77,6 +73,7 @@ a4newfat = ['202108', '202109', '202110', '202111', '202112']
 
 @bot.event
 async def on_ready():
+    await startClient('onkardsagare2@gmail.com', 'Onkarcocapi@1234')
     print(f"[+] {bot.user} IS UP!")
 
 ####### +++++++++++++ OWNER COMMANDS +++++++++++++ #######
@@ -927,7 +924,7 @@ async def ip_lookup_command(ctx: discord.ApplicationContext,ip:str):
 @bot.slash_command(name="receipt_apple",description="Generates a fake apple receipt (Full screen size)",guild_ids=server_ids)
 @guild_only()
 @option("date_month", description="Enter the month",choices=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"])
-@option("date_year", description="Enter the year",choices=["2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022","2023"])
+@option("date_year", description="Enter the year",choices=["2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022","2023", "2024"])
 @option("currency", description="Enter the currency symbol")
 @option("amount", description="Enter the amount")
 @option("item_name", description="Enter the item name (Name of purchased item/product)")
@@ -1072,7 +1069,7 @@ async def ios_receipt_2_command(ctx: discord.ApplicationContext,currency:str,amo
 @option("amount", description="Enter the amount")
 @option("item_name", description="Enter the item name (Name of purchased item/product)")
 @option("date_month", description="Enter the month",choices=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"])
-@option("date_year", description="Enter the year",choices=["2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022", "2023"])
+@option("date_year", description="Enter the year",choices=["2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022", "2023", "2024"])
 @option("date_day", description="Enter the day (numbered)",min_length=2,max_length=2,required=False,default=00)
 async def ios_receipt_3_command(ctx: discord.ApplicationContext,currency:str,amount:str,item_name:str,date_month:str,date_year:str,date_day:str):
     if utils.is_buyer_valid(str(ctx.interaction.user.id)) == 'VALID':
@@ -1130,7 +1127,7 @@ async def ios_receipt_3_command(ctx: discord.ApplicationContext,currency:str,amo
 @option("amount", description="Enter the amount")
 @option("item_name", description="Enter the item name (Name of purchased item/product)")
 @option("date_month", description="Enter the month",choices=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"])
-@option("date_year", description="Enter the year",choices=["2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022", "2023"])
+@option("date_year", description="Enter the year",choices=["2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022", "2023", "2024"])
 @option("date_day", description="Enter the day (numbered)",min_length=2,max_length=2,required=False,default=00)
 async def google_play_receipt_command(ctx: discord.ApplicationContext,currency:str,amount:str,item_name:str,date_month:str,date_year:str,date_day:str):
     if utils.is_buyer_valid(str(ctx.interaction.user.id)) == 'VALID':
